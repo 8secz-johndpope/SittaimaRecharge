@@ -1,224 +1,46 @@
 const router = require("express").Router();
-const bcrypt = require("bcryptjs");
 const User = require("../../../models/User");
+const ReferalCode = require("../../../models/UserReferalCode");
 const _ = require("lodash");
 const passport = require("passport");
-const validateRegisterInput = require("../../../services/validation/register");
-const validateEditProfileInput = require("../../../services/validation/editProfile");
-const validateLoginInput = require("../../../services/validation/login");
 const generateToken = require("../../../middlewares/generateToken");
-const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../../../config/key");
-var Base64 = require("js-base64").Base64;
-const validator = require("validator");
+const generateReferalCode = require("../../../middlewares/generateReferalCode");
 var mongoose = require("mongoose");
-
-router.get("/home", (req, res) => {
-	res.send(`${Base64.encode(0)}, ${typeof parseInt(Base64.encode(0))}`);
-});
-
-// @route:  POST api/users/register
-// @desc:   register the user
-// @access: public
-router.post("/register", (req, res) => {
-	/*
-  mandatory parameter:  username, email, password,password2,firstname,lastname
-  optional Parameter:   googleID, facebookID, photo, organization, orgAddress
-  */
-
-	const { errors, isValid } = validateRegisterInput(req.body);
-
-	//check validation
-	if (!isValid) {
-		return res.status(400).json(errors);
-	}
-
-	//check and save
-	User.findOne({ email: req.body.email }).then(existingEmailUser => {
-		if (existingEmailUser) {
-			errors.email = "Email already exists";
-			return res.status(400).json(errors);
-		} else {
-			var userBody = {};
-			userBody.email = req.body.email;
-			userBody.gender = req.body.gender;
-			userBody.username = req.body.username;
-			userBody.password = req.body.password;
-			userBody.name = {};
-			userBody.name.first = req.body.firstname;
-			userBody.name.last = req.body.lastname;
-			userBody.gender = req.body.gender;
-
-			// check if email exists
-			User.findOne({ email: userBody.email })
-				.then(userFoundFromEmail => {
-					// when email already exists in database
-					if (userFoundFromEmail)
-						return res.json({
-							"errors.email": "Email already exists",
-							userFoundFromEmail
-						});
-					// check if username exists
-					User.findOne({ username: userBody.username })
-						.then(userFoundFromUsername => {
-							if (userFoundFromUsername)
-								return res.json({
-									"errors.username": "Username already exists",
-									userFoundFromUsername
-								});
-							const userModel = new User(userBody);
-							userModel
-								.save()
-								.then(savedUser => {
-									if (savedUser) {
-										res.json({ success: true });
-									}
-								})
-								.catch(err => {
-									console.log(err);
-								});
-						})
-						.catch(err => {
-							console.log(err);
-						});
-				})
-				.catch(err => {
-					console.log(err);
-				});
-		}
-	});
-});
-
-// @route:  POST api/users/register
-// @desc:   register the user
-// @access: public
-router.post("/edit", (req, res) => {
-	/*
-  mandatory parameter:  username, email, password,password2,firstname,lastname
-  optional Parameter:   googleID, facebookID, photo, organization, orgAddress
-  */
-
-	const { errors, isValid } = validateRegisterInput(req.body);
-
-	//check validation
-	if (!isValid) {
-		return res.status(400).json(errors);
-	}
-
-	//check and save
-	User.findOne({ email: req.body.email }).then(existingEmailUser => {
-		if (existingEmailUser) {
-			errors.email = "Email already exists";
-			return res.status(400).json(errors);
-		} else {
-			var userBody = {};
-			userBody.email = req.body.email;
-			userBody.username = req.body.username;
-			userBody.password = req.body.password;
-			userBody.name = {};
-			userBody.name.first = req.body.firstname;
-			userBody.name.last = req.body.lastname;
-			userBody.gender = req.body.gender;
-
-			// const role = Base64.decode(req.body.role || " ");
-			var privilegeBody = {};
-			privilegeBody.role = req.body.role || 0;
-
-			// if (!typeof privilegeBody.role == "number")
-			// 	return res.json({ success: false });
-
-			// check if email exists
-			User.findOne({ email: userBody.email })
-				.then(userFoundFromEmail => {
-					// when email already exists in database
-					if (userFoundFromEmail)
-						return res.json({
-							"errors.email": "Email already exists",
-							userFoundFromEmail
-						});
-					// check if username exists
-					User.findOne({ username: userBody.username })
-						.then(userFoundFromUsername => {
-							if (userFoundFromUsername)
-								return res.json({
-									"errors.username": "Username already exists",
-									userFoundFromUsername
-								});
-							User.findByIdAndUpdate(
-								req.user.id,
-								{ $set: userBody },
-								{ new: true }
-							).then(profile => res.json(profile));
-						})
-						.catch(err => {
-							console.log(error);
-						});
-				})
-				.catch(err => {
-					console.log(error);
-				});
-		}
-	});
-});
 
 // @route:  POST api/users/login
 // @desc:   login the user and response the token
 // @access: public
-router.post("/login", (req, res) => {
-	const { errors, isValid } = validateLoginInput(req.body);
-
-	//check validation
-	if (!isValid) {
-		return res.status(400).json(errors);
+router.get(
+	"/reffered/:referalCode",
+	passport.authenticate("jwt", { session: false }),
+	async (req, res) => {
+		const referalCode = req.params.referalCode;
+		const user = req.user;
+		ReferalCode.findOne({})
+			.then(result => {})
+			.catch(err => {});
 	}
+);
 
-	const { emailOrUsername, password } = req.body;
+// @route:  POST api/users/login
+// @desc:   login the user and response the token
+// @access: public
+router.get(
+	"/referalCode",
+	passport.authenticate("jwt", { session: false }),
+	async (req, res) => {
+		var referalCodeBody = {};
 
-	const isEmail = validator.isEmail(emailOrUsername);
-
-	User.findOne(
-		isEmail ? { email: emailOrUsername } : { username: emailOrUsername }
-	).then(user => {
-		if (user) {
-			if (user.flag) {
-				errors.message = "You cannot Login with this email";
-				return res.status(403).json(errors);
-			}
-
-			bcrypt.compare(password, user.password, (err, isMatch) => {
-				if (err) {
-					return console.log(err);
+		referalCodeBody.user;
+		const email = req.params.email;
+		generateReferalCode(email)
+			.then(referalCode => {
+				if (referalCode) {
 				}
-				if (isMatch) {
-					// user matched
-
-					const JWTPayload = { id: user.id, email: user.email };
-					//sign Token
-					jwt.sign(
-						JWTPayload,
-						JWT_SECRET,
-						{ expiresIn: 36000 },
-						(err, token) => {
-							if (!err) {
-								res.json({
-									token: "Bearer " + token
-								});
-							} else {
-								console.log(err);
-							}
-						}
-					);
-				} else {
-					//password do not match
-					res.json({ "errors.password": "Password do not match" });
-				}
-			});
-		} else {
-			//no user with such email
-			res.json({ "errors.email": "No user with this email" });
-		}
-	});
-});
+			})
+			.catch(err => {});
+	}
+);
 
 // @route:  POST api/users/current
 // @desc:   get the details of currently logged in user

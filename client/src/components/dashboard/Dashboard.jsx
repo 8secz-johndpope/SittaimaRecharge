@@ -9,76 +9,41 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import logo from "../../image/logo.png";
 import image from "../../image/sidebarImage.jpg";
-import { gaupalikaWard, selectedLanguage } from "../../variable/global";
 import dashboardStyle from "../assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
 import dashboardRoutes from "../common/dashboardRoute";
 // core components
 import Header from "../common/Header/Header.jsx";
 // import Footer from "../common/Footer/Footer.jsx";
 import Sidebar from "../common/Sidebar/SideMenu";
-import HouseAnalysis from "./bibaran/gharBibaran/";
-import InstitutionAnalysis from "./bibaran/institutionBibaran/";
-import FamilyAnalysis from "./bibaran/pariwarikBibaran/";
+// import HouseAnalysis from "./bibaran/gharBibaran/";
+// import InstitutionAnalysis from "./bibaran/institutionBibaran/";
+// import FamilyAnalysis from "./bibaran/pariwarikBibaran/";
 import Home from "./home/Home";
-import HouseSurvey from "./houseSurvey/";
-import InstitutionSurvey from "./institutionSurvey/";
-import Log from "./log/";
-import EditProfile from "./profile/EditProfile";
-import ViewProfile from "./profile/ViewProfile";
-import AdvancedHouseSearch from "./search/advancedHouseSearch/";
-import AdvancedInstitutionSearch from "./search/advancedInstitutionSearch/";
-import SearchByDeath from "./search/death/";
-import UserProfile from "./user/";
-import AddUser from "./user/AddUser.jsx";
-import EditUser from "./user/EditUser";
-
-const switchRoute = (
-	<Switch>
-		{dashboardRoutes.map((prop, key) => {
-			// if (prop.redirect) return <Redirect from={"/"} to={"/home"} key={key} />;\
-			if (prop.hasChild) {
-				prop.child.map((each, i) => {
-					return (
-						<Route
-							exact
-							path={each.path}
-							component={each.component}
-							key={i + key}
-						/>
-					);
-				});
-			} else
-				return (
-					<Route exact path={prop.path} component={prop.component} key={key} />
-				);
-		})}
-	</Switch>
-);
+// import HouseSurvey from "./houseSurvey/";
+// import InstitutionSurvey from "./institutionSurvey/";
+// import Log from "./log/";
+// import EditProfile from "./profile/EditProfile";
+// import ViewProfile from "./profile/ViewProfile";
+// import AdvancedHouseSearch from "./search/advancedHouseSearch/";
+// import AdvancedInstitutionSearch from "./search/advancedInstitutionSearch/";
+// import SearchByDeath from "./search/death/";
+// import UserProfile from "./user/";
+// import AddUser from "./user/AddUser.jsx";
+// import EditUser from "./user/EditUser";
 
 const switchRoutes = (
 	<Switch>
-		<Route path="/users/add" component={AddUser} />
+		{/* <Route path="/users/add" component={AddUser} />
 		<Route path="/users/edit/:id" component={EditUser} />
 		<Route path="/users" component={UserProfile} />
-		<Route path="/advance-search-house" component={AdvancedHouseSearch} />
-		<Route
-			path="/advance-search-institution"
-			component={AdvancedInstitutionSearch}
-		/>
-		{/* <Route path="/house-number-search" component={SearchByHouseNumber} /> */}
-		<Route path="/search-by-death" component={SearchByDeath} />
-		<Route path="/survey-by-house" component={HouseSurvey} />
-		<Route path="/survey-by-institution" component={InstitutionSurvey} />
-		<Route path="/analysis-by-house" component={HouseAnalysis} />
-		<Route path="/analysis-by-institution" component={InstitutionAnalysis} />
-		<Route path="/analysis-by-family" component={FamilyAnalysis} />
+
 		<Route path="/log" component={Log} />
 		<Route path="/myprofile" component={ViewProfile} />
-		<Route path="/edit-profile" component={EditProfile} />
+		<Route path="/edit-profile" component={EditProfile} /> */}
+		<Route exact path="/home" component={Home} />
 		<Route path="/" component={Home} />
 	</Switch>
 );
-
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -119,8 +84,7 @@ class App extends React.Component {
 			<div className={classes.wrapper}>
 				<Sidebar
 					routes={dashboardRoutes}
-					logoText={gaupalikaWard[selectedLanguage]}
-					logo={logo}
+					logoText={"Sittaima Recharge"}
 					image={image}
 					handleDrawerToggle={this.handleDrawerToggle}
 					open={this.state.mobileOpen}

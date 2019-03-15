@@ -23,7 +23,6 @@ import Button from "@material-ui/core/Button";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import villageImage from "../../image/villageBlur.png";
 import { loginUser } from "../../actions/authAction";
-import { getCount } from "../../actions/analysisAction";
 
 class Login extends Component {
 	constructor(props) {
@@ -36,7 +35,7 @@ class Login extends Component {
 		};
 	}
 	componentDidMount() {
-		this.props.getCount();
+		
 		if (this.props.auth.isAuthenticated) {
 			this.props.history.push("/home");
 		}
@@ -73,7 +72,7 @@ class Login extends Component {
 	onSubmit = event => {
 		event.preventDefault();
 		const newUser = {
-			emailOrUsername: this.state.email,
+			email: this.state.email,
 			password: this.state.password
 		};
 		this.props.loginUser(newUser, this.props.history);
@@ -227,6 +226,6 @@ const mapStateToProps = state => ({
 export default withStyles(styles)(
 	connect(
 		mapStateToProps,
-		{ loginUser, getCount }
+		{ loginUser }
 	)(withRouter(Login))
 );

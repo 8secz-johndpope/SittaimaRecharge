@@ -15,10 +15,7 @@ import React from "react";
 import CardHeader from "../../common/Card/CardHeader.jsx";
 import CardIcon from "../../common/Card/CardIcon";
 import isEmpty from "../../../utils/validation/is-empty";
-import {
-	statisticsAnalysisName,
-	selectedLanguage
-} from "../../../variable/global";
+
 import "./fa.css";
 var FontAwesome = require("react-fontawesome");
 
@@ -34,11 +31,6 @@ class FamilyProgress extends React.Component {
 		expanded: false,
 		topSlicedColor: [],
 		collapseSlicedColor: []
-	};
-
-	getTitle = (ward, object) => {
-		if (isEmpty(ward)) return object[0][selectedLanguage];
-		else return object[ward.wardNumber][selectedLanguage];
 	};
 
 	componentDidUpdate(prevProps) {
@@ -139,7 +131,7 @@ class FamilyProgress extends React.Component {
 						fontWeight: "600"
 					}}
 				>
-					{each.title[selectedLanguage]}
+					{each.title}
 				</Typography>
 			</Grid>
 			<Grid
@@ -193,7 +185,7 @@ class FamilyProgress extends React.Component {
 				alignItems="flex-start"
 				style={{ marginTop: 5 }}
 			>
-				<Grid item>{each.subtitle[selectedLanguage]}</Grid>
+				<Grid item>{each.subtitle}</Grid>
 				<Grid item>
 					<Typography variant="caption">
 						{parseFloat(((each.data / each.total) * 100).toFixed(2))} %
@@ -212,7 +204,7 @@ class FamilyProgress extends React.Component {
 	state = {};
 
 	render() {
-		const { classes, loading, progress } = this.props;
+		const { classes, loading } = this.props;
 		const {
 			expanded,
 			collapseSlicedColor,
@@ -250,10 +242,7 @@ class FamilyProgress extends React.Component {
 												<Typography
 													className={this.props.classes.populationHeadline}
 												>
-													{this.getTitle(
-														this.props.wardData,
-														statisticsAnalysisName
-													)}
+													Title
 												</Typography>
 											</CardIcon>
 										</CardHeader>

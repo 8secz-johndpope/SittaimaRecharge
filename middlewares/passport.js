@@ -7,6 +7,7 @@ const {
 	googleClientSecret
 } = require("../config/key");
 const User = require("../models/User");
+const generateReferalCode = require("../middlewares/generateReferalCode");
 
 const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -43,20 +44,15 @@ module.exports = passport => {
 				proxy: true
 			},
 			async (accessToken, refershToken, profile, done) => {
+				console.log("profile via google", profile);
 				var user = await User.findOne({ accountId: profile.id, flag: false });
 				if (user) {
-					user.refer = 0;
+					user.isNew = false;
 					done(null, user);
 				} else {
-					console.log(profile);
-					user = {
-						firstname: profile.name.givenName,
-						lastname: profile.name.familyName,
-						email: profile.emails[0].value,
-						photo: profile.photos[0].value,
-						gender: profile.gender
-					};
-					done(null, user);
+					const newUser = profile;
+					newUser.isNew = true;
+					done(null, newUser);
 				}
 			}
 		)

@@ -7,15 +7,13 @@ import injectSheet from "react-jss";
 
 class WardInfo extends Component {
 	onWardClick = unique => evt => {
-		let data = {};
-		if (unique !== 0) data = { wardNumber: unique };
-		this.props.onWardClick(data);
+		this.props.onWardClick(unique);
 	};
 	render() {
 		const {
 			classes,
 			wardNumber,
-			wardName,
+			time,
 			unique,
 			backgroundColor,
 			isActive
@@ -37,35 +35,13 @@ class WardInfo extends Component {
 							isActive && classes.white
 						)}
 					>
-						{wardNumber}
-					</Typography>
-					<Typography
-						variant="caption"
-						className={classNames(isActive && classes.white)}
-					>
-						( {wardName} )
+						{time}
 					</Typography>
 				</span>
 			</Button>
 		);
 	}
 }
-
-// {/* <Card className={classes.card}>
-// 				<CardHeader color="warning" stats icon>
-// 					<Typography
-// 						gutterBottom
-// 						variant="h5"
-// 						component="h2"
-// 						className={classes.white}
-// 					>
-// 						{wardNumber}
-// 					</Typography>
-// 					<Typography component="p" className={classes.white}>
-// 						{wardName}
-// 					</Typography>
-// 				</CardHeader>
-// 			</Card> */}
 
 const styles = theme => ({
 	wardText: {

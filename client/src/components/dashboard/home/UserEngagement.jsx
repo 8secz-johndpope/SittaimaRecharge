@@ -8,16 +8,13 @@ import { loadCSS } from "fg-loadcss/src/loadCSS";
 import PropTypes from "prop-types";
 import React from "react";
 import isEmpty from "../../../utils/validation/is-empty";
-import {
-	janasankhyaBibaranName,
-	selectedLanguage
-} from "../../../variable/global";
+
 import Card from "../../common/Card/Card.jsx";
 import CardBody from "../../common/Card/CardBody";
 import CardHeader from "../../common/Card/CardHeader.jsx";
 import CardIcon from "../../common/Card/CardIcon";
 import "./fa.css";
-import FamilyProgress from "./FamilyProgress";
+import UserProgress from "./UserProgress";
 var FontAwesome = require("react-fontawesome");
 
 class PopulationInfo extends React.Component {
@@ -27,10 +24,6 @@ class PopulationInfo extends React.Component {
 			document.querySelector("#insertion-point-jss")
 		);
 	}
-	getTitle = (ward, object) => {
-		if (isEmpty(ward)) return object[0][selectedLanguage];
-		else return object[ward.wardNumber][selectedLanguage];
-	};
 
 	prepareStatistics = data => {
 		const { classes } = this.props;
@@ -58,14 +51,12 @@ class PopulationInfo extends React.Component {
 							/> */}
 
 							<Typography className={this.props.classes.populationHeadline}>
-								{each[selectedLanguage]}
+								{each["english"]}
 							</Typography>
 						</CardIcon>
 						<CardBody style={{ paddingTop: 10 }}>
 							<h1 className={classes.cardCategory}>{each.count}</h1>
-							<h3 className={classes.cardTitle}>
-								{each.unit[selectedLanguage]}
-							</h3>
+							<h3 className={classes.cardTitle}>{each.unit["english"]}</h3>
 						</CardBody>
 					</CardHeader>
 				</Card>
@@ -75,7 +66,12 @@ class PopulationInfo extends React.Component {
 
 	getCard = () => {
 		const { classes } = this.props;
-		const population = this.props.population.data;
+		const population = [
+			{ title: "Total User", count: "150" },
+			{ title: "Total User", count: "150" },
+			{ title: "Total User", count: "150" },
+			{ title: "Total User", count: "150" }
+		];
 		const icon = ["home", "users", "male", "female", "user"];
 		const bg = [
 			"#00ACC1", //lim
@@ -92,7 +88,7 @@ class PopulationInfo extends React.Component {
 					<CardHeader color="success" stats icon>
 						<CardIcon color="success">
 							<Typography className={this.props.classes.populationHeadline}>
-								{this.getTitle(this.props.wardData, janasankhyaBibaranName)}
+								Title
 							</Typography>
 						</CardIcon>
 					</CardHeader>
@@ -124,7 +120,7 @@ class PopulationInfo extends React.Component {
 
 									<Grid item>
 										<Typography className={classes.populationTitle}>
-											{eachPop.title[selectedLanguage]}
+											{eachPop.title}
 										</Typography>
 									</Grid>
 									<Grid item>
@@ -153,7 +149,7 @@ class PopulationInfo extends React.Component {
 					<CardHeader color="success" stats icon>
 						<CardIcon color="success">
 							<Typography className={this.props.classes.populationHeadline}>
-								{this.getTitle(this.props.wardData, janasankhyaBibaranName)}
+								Title
 							</Typography>
 						</CardIcon>
 					</CardHeader>
@@ -169,76 +165,24 @@ class PopulationInfo extends React.Component {
 
 	render() {
 		const { classes, loading } = this.props;
-		const data = [
-			{
-				english: "Area",
-				icon: "map-marked-alt",
-				nepali: "Area",
-				count: 121.56,
-				unit: { english: "sq. km", nepali: "sq. km" }
-			},
-			{
-				english: "Density",
-				icon: "map-marked-alt",
-				nepali: "Density",
-				count: 80.54,
-				unit: { english: "per sq. km", nepali: "per sq. km" }
-			},
-			{
-				english: "Gender Ratio",
-				icon: "map-marked-alt",
-				nepali: "Gender Ratio",
-				count: 89.43,
-				unit: { english: "m:f", nepali: "m:f" }
-			},
-			{
-				english: "Gender Ratio",
-				icon: "map-marked-alt",
-				nepali: "Gender Ratio",
-				count: 89.43,
-				unit: { english: "m:f", nepali: "m:f" }
-			},
-			{
-				english: "Gender Ratio",
-				icon: "map-marked-alt",
-				nepali: "Gender Ratio",
-				count: 89.43,
-				unit: { english: "m:f", nepali: "m:f" }
-			}
+		const progress = [
+			{ title: "title", subtitle: "subtitle", data: 120, total: 130 },
+			{ title: "title", subtitle: "subtitle", data: 120, total: 130 },
+			{ title: "title", subtitle: "subtitle", data: 120, total: 130 },
+			{ title: "title", subtitle: "subtitle", data: 120, total: 130 },
+			{ title: "title", subtitle: "subtitle", data: 120, total: 130 },
+			{ title: "title", subtitle: "subtitle", data: 120, total: 130 },
+			{ title: "title", subtitle: "subtitle", data: 120, total: 130 },
+			{ title: "title", subtitle: "subtitle", data: 120, total: 130 },
+			{ title: "title", subtitle: "subtitle", data: 120, total: 130 },
+			{ title: "title", subtitle: "subtitle", data: 120, total: 130 }
 		];
 		return (
 			<div>
 				<Grid container direction="column">
-					{/* {loading ? (
-						<Grid
-							container
-							direction="row"
-							justify="center"
-							alignItems="center"
-						>
-							<Grid item>
-								<ClipLoader
-									sizeUnit={"px"}
-									size={84}
-									color={"#00ACC1"}
-									loading={loading}
-								/>
-							</Grid>
-						</Grid>
-					) :  */}
-
-					{/* <Grid
-						container
-						direction="row"
-						spacing={16}
-						style={{ display: "flex" }}
-					>
-						{this.prepareStatistics(data)}
-					</Grid> */}
-
-					<FamilyProgress
+					<UserProgress
 						wardData={this.props.wardData}
-						progress={this.props.progress}
+						progress={progress}
 						loading={this.props.progressLoad}
 					/>
 					<Grid container spacing={24} style={{ marginTop: 20 }}>

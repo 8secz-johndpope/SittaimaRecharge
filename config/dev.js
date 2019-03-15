@@ -2,8 +2,8 @@
 
 module.exports = {
 	googleClientID:
-		"514116954744-p4akk3n6r86382paopv7e750pqnfhsj6.apps.googleusercontent.com",
-	googleClientSecret: "SssXn6pZK_oaFBvLMdy8lXjT",
+		"990982365285-fn0ff2fpu0sula1g6p4fe7q8s8469hei.apps.googleusercontent.com",
+	googleClientSecret: "uuHjxyxE4-LcP5BMKSK3O8nL",
 	JWT_SECRET: "fdaskfhdaskfa34872",
 	MONGODB_URI: `mongodb://localhost:27017/SittaimaRecharge`,
 	MONGODB_REMOTE:

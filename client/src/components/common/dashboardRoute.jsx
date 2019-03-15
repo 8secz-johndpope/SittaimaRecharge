@@ -2,90 +2,67 @@
 import HomeIcon from "@material-ui/icons/Home";
 import PersonIcon from "@material-ui/icons/Person";
 import LogIcon from "@material-ui/icons/Description";
-
-import Home from "../dashboard/home/Home";
-import UserProfile from "../dashboard/user";
-import Log from "../dashboard/log";
 import SearchIcon from "@material-ui/icons/Search";
 import HouseSurveyIcon from "@material-ui/icons/Receipt";
 import InstitutionSurveyIcon from "@material-ui/icons/AccountBalance";
-import HouseSurvey from "../dashboard/houseSurvey/";
-import InstitutionSurvey from "../dashboard/institutionSurvey/";
+
 const dashboardRoutes = [
 	{
 		path: "/home",
 		exact: true,
 		hasChild: false,
-		sidebarName: { english: "Home Page", nepali: "गृह पृष्ठ" },
-		navbarName: { english: "Sittaima Recharge", nepali: "सित्तैमा रिचार्ज" },
+		sidebarName: "Home Page",
+		navbarName: "Sittaima Recharge",
 		icon: HomeIcon
 	},
 
 	{
-		sidebarName: { english: "User", nepali: "प्रयोगकर्ता" },
+		sidebarName: "User",
 		icon: HomeIcon,
 		hasChild: true,
 		child: [
 			{
 				path: "/user/contributor",
-				sidebarName: { english: "Contributor", nepali: "गृह" },
-				navbarName: {
-					english: "Contributor",
-					nepali: "सित्तैमा"
-				},
+				sidebarName:  "Contributor",
+				navbarName: "Contributor",
 				icon: HomeIcon
 			},
 			{
 				path: "/user/list",
-				sidebarName: { english: "List", nepali: "गृह" },
-				navbarName: {
-					english: "List",
-					nepali: "सित्तैमा"
-				},
+				sidebarName:  "User Lists",
+				navbarName: "User Lists",
 				icon: PersonIcon
 			},
 			{
 				path: "/user/revenue",
-				sidebarName: { english: "Revenue", nepali: "गृह" },
-				navbarName: {
-					english: "Revenue",
-					nepali: "सित्तैमा"
-				},
+				sidebarName:  "Revenue",
+				navbarName: "Revenue",
 				icon: PersonIcon
 			}
 		]
 	},
 	{
-		sidebarName: { english: "Advertisement", nepali: "विज्ञापन" },
+		sidebarName:  "Contributor",
 		icon: SearchIcon,
 		hasChild: true,
 		child: [
 			{
 				path: "/advertisement/daily-reward",
-				sidebarName: { english: "Daily Reward", nepali: "दैनिक इनाम" },
-				navbarName: { english: "Daily Reward", nepali: "दैनिक इनाम" },
+				sidebarName:  "Daily Reward",
+				navbarName: "Daily Reward",
 				icon: PersonIcon
 			},
 
 			{
 				path: "/advertisement/local-advertisement",
-				sidebarName: {
-					english: "Local Advertisement",
-					nepali: "स्थानीय विज्ञापन"
-				},
-				navbarName: {
-					english: "Local Advertisement",
-					nepali: "स्थानीय विज्ञापन"
-				},
+				sidebarName:  "Local Advertisement",
+				navbarName: "Local Advertisement",
 				icon: PersonIcon
 			},
 			{
 				path: "/advertisement/daily-challenge",
-				sidebarName: { english: "Daily Challenge", nepali: "दैनिक चुनौती" },
-				navbarName: {
-					english: "Daily Challenge",
-					nepali: "दैनिक चुनौती"
-				},
+				sidebarName:  "Daily Challenge",
+				navbarName: "Daily Challenge",
 				icon: PersonIcon
 			}
 		]
@@ -94,91 +71,64 @@ const dashboardRoutes = [
 	{
 		path: "/jackpot",
 		hasChild: false,
-		sidebarName: { english: "Jackpot", nepali: "लटरी" },
-		navbarName: {
-			english: "Jackpot",
-			nepali: "लटरी"
-		},
+		sidebarName:  "Jackpot",
+		navbarName: "Jackpot",
 		icon: HouseSurveyIcon
 	},
 	{
 		path: "/vendors",
 		hasChild: false,
-		sidebarName: { english: "Vendors", nepali: "ग्राहक" },
-		navbarName: {
-			english: "Vendors",
-			nepali: "ग्राहक"
-		},
+		sidebarName:  "Vendors",
+		navbarName: "Vendors",
 		icon: InstitutionSurveyIcon
 	},
 	{
 		path: "/payment",
 		hasChild: false,
-		sidebarName: { english: "Payment", nepali: "भुक्तानी" },
-		navbarName: {
-			english: "Payment",
-			nepali: "भुक्तानी"
-		},
+		sidebarName:  "Payment",
+		navbarName: "Payment",
 		icon: HomeIcon
 	},
 	{
 		path: "/Analytics",
 		hasChild: false,
-		sidebarName: { english: "Analytics", nepali: "एनालिटिक्स" },
-		navbarName: {
-			english: "Analytics",
-			nepali: "एनालिटिक्स"
-		},
+		sidebarName:  "Analytics",
+		navbarName: "Analytics",
 		icon: HomeIcon
 	},
 	{
 		path: "/options",
 		hasChild: false,
-		sidebarName: { english: "Option", nepali: "सामग्री व्यवस्थापन प्रणाली" },
-		navbarName: {
-			english: "Option",
-			nepali: "सामग्री व्यवस्थापन प्रणाली"
-		},
+		sidebarName:  "Options",
+		navbarName: "Options",
 		icon: HomeIcon
 	},
 	{
 		path: "/log-management",
 		hasChild: false,
-		sidebarName: { english: "Log Management", nepali: "लग" },
-		navbarName: {
-			english: "Log Management",
-			nepali: "लग"
-		},
+		sidebarName:  "Log Management",
+		navbarName: "Log Management",
 		icon: HomeIcon
 	},
 	{
 		path: "/notification",
 		hasChild: false,
-		sidebarName: { english: "Notification", nepali: "सूचना" },
-		navbarName: {
-			english: "Notification",
-			nepali: "सूचना"
-		},
+		sidebarName:  "Notification",
+		navbarName: "Notification",
 		icon: HomeIcon
 	},
 	{
 		path: "/report",
 		hasChild: false,
-		sidebarName: { english: "Report", nepali: "रिपोर्ट" },
-		navbarName: {
-			english: "Report",
-			nepali: "रिपोर्ट"
-		},
+		sidebarName:  "Report",
+		navbarName: "Report",
 		icon: HomeIcon
 	},
 	{
 		path: "/admin",
 		hasChild: false,
-		sidebarName: { english: "Admin", nepali: "व्यवस्थापक" },
-		navbarName: {
-			english: "Admin",
-			nepali: "व्यवस्थापक"
-		},
+		sidebarName:  "Admin",
+		navbarName: "Admin",
 		icon: HomeIcon
 	}
 
