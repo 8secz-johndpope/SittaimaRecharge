@@ -96,7 +96,7 @@ router.post("/login", (req, res) => {
   */
 
 	const { errors, isValid } = validateLoginInput(req.body);
-
+	console.log("login requested");
 	//check validation
 	if (!isValid) {
 		return res.status(400).json(errors);

@@ -1,0 +1,27 @@
+.red {
+	color: red;
+}
+
+.green {
+	color: green;
+}
+
+.pink {
+	color: pink;
+}
+
+.pageBreak {
+    
+}
+/* p {
+    page-break-after: avoid;
+    page-break-before: always;
+}
+
+p:first-child {
+    page-break-before: avoid;
+} */
+
+button {
+	margin: 10px;
+}

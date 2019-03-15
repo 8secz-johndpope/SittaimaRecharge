@@ -1,0 +1,9 @@
+.fa {
+    position: relative;
+}
+
+.fa:before {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
