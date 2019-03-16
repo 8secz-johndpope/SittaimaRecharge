@@ -1,6 +1,10 @@
 const passport = require("passport");
 const generateToken = require("../../middlewares/generateToken");
-
+const generateReferalCode = require("../../middlewares/generateToken");
+const User = require("../../models/User");
+const UserReferalCode = require("../../models/UserReferalCode");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../../config/key");
 // routes handler
 module.exports = app => {
 	app.get(
@@ -26,44 +30,29 @@ module.exports = app => {
 					userBody.name.first = user.name.givenName;
 					userBody.name.last = user.name.familyName || "";
 					userBody.gender = user.gender;
-					userModel
-						.save()
+					const UserModel = new User(userBody);
+					UserModel.save()
 						.then(savedUser => {
 							if (savedUser) {
-								generateReferalCode(userBody.email)
-									.then(referalCode => {
-										var userReferalBody = {};
-										userReferalBody.referalCode = referalCode;
-										userReferalBody.user = savedUser._id;
-										const UserReferalBody = new UserReferalBody(
-											userReferalBody
-										);
-										UserReferalBody.save()
-											.then(savedReferal => {
-												const JWTPayload = {
-													id: savedUser._id,
-													email: savedUser.email,
-													referalCode: referalCode
-												};
-												//sign Token
-												jwt.sign(
-													JWTPayload,
-													JWT_SECRET,
-													{ expiresIn: 86400 },
-													(err, token) => {
-														if (!err) {
-															token = "Bearer " + token;
+								//sign Token
+								const JWTPayload = {
+									id: savedUser._id,
+									email: savedUser.email
+								};
+								jwt.sign(
+									JWTPayload,
+									JWT_SECRET,
+									{ expiresIn: 86400 },
+									(err, token) => {
+										if (!err) {
+											token = "Bearer " + token;
 
-															res.json({ user: savedUser, token: req.token });
-														} else {
-															done("Cannot proceed", null);
-														}
-													}
-												);
-											})
-											.catch(err => {});
-									})
-									.catch(err => {});
+											res.json({ token: req.token });
+										} else {
+											done("Cannot proceed", null);
+										}
+									}
+								);
 							}
 						})
 						.catch(err => {
@@ -74,8 +63,7 @@ module.exports = app => {
 					const savedUser = req.user;
 					const JWTPayload = {
 						id: savedUser._id,
-						email: savedUser.email,
-						referalCode: savedUser.referalCode
+						email: savedUser.email
 					};
 					//sign Token
 					jwt.sign(
@@ -85,10 +73,11 @@ module.exports = app => {
 						(err, token) => {
 							if (!err) {
 								token = "Bearer " + token;
-
-								done(null, { savedUser, token });
+								res.json({ token });
 							} else {
-								done("Cannot proceed", null);
+								var errors = {};
+								errors.login = "Cannot proceed";
+								res.json({ error });
 							}
 						}
 					);

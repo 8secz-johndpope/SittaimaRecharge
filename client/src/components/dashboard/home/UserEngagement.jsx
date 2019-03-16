@@ -68,7 +68,7 @@ class PopulationInfo extends React.Component {
 		const { classes } = this.props;
 		const population = [
 			{ title: "Total User", count: "150" },
-			{ title: "Total User", count: "150" },
+			{ title: "Active User", count: "150" },
 			{ title: "Total User", count: "150" },
 			{ title: "Total User", count: "150" }
 		];
@@ -177,13 +177,14 @@ class PopulationInfo extends React.Component {
 			{ title: "title", subtitle: "subtitle", data: 120, total: 130 },
 			{ title: "title", subtitle: "subtitle", data: 120, total: 130 }
 		];
+
 		return (
 			<div>
 				<Grid container direction="column">
 					<UserProgress
 						wardData={this.props.wardData}
 						progress={progress}
-						loading={this.props.progressLoad}
+						loading={false}
 					/>
 					<Grid container spacing={24} style={{ marginTop: 20 }}>
 						{loading ? this.getLoading(5) : this.getCard()}

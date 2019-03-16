@@ -7,7 +7,6 @@ const {
 	googleClientSecret
 } = require("../config/key");
 const User = require("../models/User");
-const generateReferalCode = require("../middlewares/generateReferalCode");
 
 const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -16,7 +15,7 @@ opts.secretOrKey = JWT_SECRET;
 module.exports = passport => {
 	passport.use(
 		new JwtStrategy(opts, (jwt_payload, done) => {
-			User.findOne({ _id: jwt_payload.id, flag: false })
+			User.findOne({ email: jwt_payload.email, flag: false })
 				.then(user => {
 					if (user) {
 						return done(null, user);
@@ -44,7 +43,6 @@ module.exports = passport => {
 				proxy: true
 			},
 			async (accessToken, refershToken, profile, done) => {
-				console.log("profile via google", profile);
 				var user = await User.findOne({ accountId: profile.id, flag: false });
 				if (user) {
 					user.isNew = false;

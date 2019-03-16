@@ -8,7 +8,6 @@ module.exports = async email => {
 			.split("@")[0]
 			.substring(0, 3)
 			.toUpperCase() + "-";
-	console.log(prefix);
 	const symbol = ["!", "@", "#", "$", "%", "^", "&", "?"];
 	const min = 0;
 	const max = 7;

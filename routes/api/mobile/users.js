@@ -5,20 +5,40 @@ const _ = require("lodash");
 const passport = require("passport");
 const generateToken = require("../../../middlewares/generateToken");
 const generateReferalCode = require("../../../middlewares/generateReferalCode");
+const { addPoints } = require("../../../middlewares/Points");
+const { fetchAllPoints } = require("../../../middlewares/fetchDBPoints");
 var mongoose = require("mongoose");
 
 // @route:  POST api/users/login
 // @desc:   login the user and response the token
 // @access: public
+var allPoints = fetchAllPoints();
 router.get(
 	"/reffered/:referalCode",
 	passport.authenticate("jwt", { session: false }),
 	async (req, res) => {
-		const referalCode = req.params.referalCode;
-		const user = req.user;
-		ReferalCode.findOne({})
-			.then(result => {})
-			.catch(err => {});
+		var errors = {};
+		const referalCode = req.params.referalCode; //userle rakheko referal code paisa pauna ko lagi
+		const user = req.user._id; //requested user ko id
+		try {
+			const usereferal = await ReferalCode.findOne({ referalCode }); //find the id of user jasko referal code use gareko xa
+			if (!usereferal) {
+				//referal code kasai sanga ni match navaesi
+				errors.referal = "Invalid Referal Code";
+				return res.status(404).json(errors); //throw errors
+			}
+			ReferalCode.findOneAndUpdate(
+				{ user },
+				{ $set: { referredvia: usereferal._id } }
+			) //tyo userko referal document find gar
+				.then(async result => {
+					// increase the points  of the user who invites
+					await addPoints(usereferal._id, allPoints.inviteAndEarn);
+					await addPoints(user, allPoints.refer);
+					res.json({ success: true });
+				})
+				.catch(err => {});
+		} catch (error) {}
 	}
 );
 
@@ -29,16 +49,26 @@ router.get(
 	"/referalCode",
 	passport.authenticate("jwt", { session: false }),
 	async (req, res) => {
-		var referalCodeBody = {};
+		const user = req.user._id;
+		const ifReferal = await ReferalCode.findOne({ user });
+		if (ifReferal) {
+			return res.json({ success: true, referalCode: ifReferal.referalCode });
+		} else {
+			var referalCodeBody = {};
 
-		referalCodeBody.user;
-		const email = req.params.email;
-		generateReferalCode(email)
-			.then(referalCode => {
-				if (referalCode) {
-				}
-			})
-			.catch(err => {});
+			referalCodeBody.user = user;
+			const email = req.user.email;
+			try {
+				referalCodeBody.referalCode = await generateReferalCode(email);
+				const referalCode = await new ReferalCode(referalCodeBody).save();
+				if (referalCodeBody.referalCode) {
+					return res.json({
+						success: true,
+						referalCode: referalCodeBody.referalCode
+					});
+				} else res.json({ success: false });
+			} catch (error) {}
+		}
 	}
 );
 

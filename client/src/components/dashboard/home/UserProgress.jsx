@@ -34,6 +34,7 @@ class FamilyProgress extends React.Component {
 	};
 
 	componentDidUpdate(prevProps) {
+		console.log("cDU", this.props.progress);
 		if (this.props.progress !== prevProps.progress) {
 			const progress = shuffle(this.props.progress);
 
@@ -204,15 +205,21 @@ class FamilyProgress extends React.Component {
 	state = {};
 
 	render() {
-		const { classes, loading } = this.props;
+		const { classes, loading, progress } = this.props;
 		const {
-			expanded,
-			collapseSlicedColor,
-			topSlicedColor,
-			topSliced,
-			collapseSliced
+			expanded
+			// collapseSlicedColor,
+			// topSlicedColor,
+			// topSliced,
+			// collapseSliced
 		} = this.state;
-
+		const topSliced = progress && progress.slice(0, this.dataShown);
+		const collapseSliced = progress && progress.slice(this.dataShown);
+		const topSlicedColor =
+			topSliced && topSliced.map(() => getRandomColor.getColor());
+		const collapseSlicedColor =
+			collapseSliced && collapseSliced.map(() => getRandomColor.getColor());
+		console.log("topSliced", this.props.progress, topSliced);
 		return (
 			<Grid
 				container

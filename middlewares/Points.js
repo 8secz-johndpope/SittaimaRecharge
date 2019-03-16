@@ -1,8 +1,8 @@
 const Points = require("../models/UserAccount");
 
-const addPoints = async (user, pointsToBeIncreased) => {
+const addPoints = async (userId, pointsToBeIncreased) => {
 	return Points.findOneAndUpdate(
-		user,
+		{ user: userId },
 		{
 			$inc: { currentPoints: pointsToBeIncreased }
 		},
